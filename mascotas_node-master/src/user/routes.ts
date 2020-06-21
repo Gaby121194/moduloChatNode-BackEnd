@@ -243,7 +243,7 @@ async function disableUser(req: ISessionRequest, res: express.Response) {
  * @apiUse OtherErrors
  */
 async function getAll(req: ISessionRequest, res: express.Response) {
-  await user.hasPermission(req.user.user_id, "admin");
+  
   const users = await user.findAll();
 
   res.json(users.map(u => {
@@ -251,7 +251,6 @@ async function getAll(req: ISessionRequest, res: express.Response) {
       id: u.id,
       name: u.name,
       login: u.login,
-      permissions: u.permissions,
       enabled: u.enabled
     };
   }));

@@ -3,8 +3,8 @@ import { strict } from "assert";
 
 export interface IChat extends mongoose.Document {
   id: string;
-  sender: string;
-  receptor: string;
+  user1: string;
+  user2: string;
   messages: Array<IMessage>;
   created: Number;
   enabled: Boolean;
@@ -15,6 +15,8 @@ export interface IMessage extends mongoose.Document {
     text: string;
     created: Number;
     receptor: string,
+    sender: string,
+    nameSender: string
 
   }
 
@@ -25,12 +27,12 @@ export interface IMessage extends mongoose.Document {
       trim: true,
       
     },
-    sender: {
+    user1: {
         type: String,
         default: ""
         
       },
-    receptor: {
+    user2: {
         type: String,
         default: "",
         

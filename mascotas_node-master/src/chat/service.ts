@@ -19,11 +19,25 @@ export async function read(userId: string, receptorId: string): Promise<IChat> {
   }
   
   async function findForUser(userId: string, receptorId: string): Promise<IChat> {
-    return await Chat.findOne({
-      sender: userId,
-      receptor: receptorId,
+    
+    let chat = await Chat.findOne({
+      user1: userId,
+      user2: receptorId,
       enabled: true
     });
+
+    if(chat) {
+      return chat
+    }
+    else {
+      let chatInverted = await Chat.findOne({
+        user1: receptorId,
+        user2: userId,
+        enabled: true
+      });
+      return chatInverted
+    }
+
   }
 
 
@@ -39,8 +53,8 @@ export async function update(userId: string, body: IMessage): Promise<IChat> {
     if (!chat) {
       chat = new Chat();
       chat.id = mongoose.Types.ObjectId.createFromHexString(userId);
-      chat.sender = userId;
-      chat.receptor = receptor;
+      chat.user1 = userId;
+      chat.user2 = receptor;
       chat.messages.push(body)
       chat.created = Date.now()
       chat.enabled = true

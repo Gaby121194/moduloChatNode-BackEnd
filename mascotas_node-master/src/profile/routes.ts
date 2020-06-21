@@ -15,6 +15,10 @@ export function initModule(app: express.Express) {
     .get(onlyLoggedIn, current)
     .post(onlyLoggedIn, updateBasicInfo);
 
+    app
+    .route("/v1/profile/:userId")
+    .get(onlyLoggedIn, user)
+
 }
 
 /**
@@ -97,5 +101,17 @@ async function updateBasicInfo(req: ISessionRequest, res: express.Response) {
     email: result.email,
     address: result.address,
     province: result.province,
+  });
+}
+
+async function user(req: ISessionRequest, res: express.Response) {
+  const result = await service.read(req.params.userId);
+  res.json({
+    name: result.name,
+    phone: result.phone,
+    email: result.email,
+    address: result.address,
+    province: result.province,
+    picture: result.picture
   });
 }
